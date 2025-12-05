@@ -1,0 +1,54 @@
+:root {
+  /* Premium Color Palette (HSL) */
+  --primary: 220 70% 50%; /* Deep Royal Blue */
+  --primary-dark: 220 70% 40%;
+  --primary-light: 220 70% 95%;
+  
+  --secondary: 280 60% 50%; /* Elegant Purple */
+  --accent: 35 90% 55%; /* Gold/Amber for highlights */
+  
+  --background: 220 20% 98%; /* Off-white/Light Gray */
+  --surface: 0 0% 100%; /* Pure White */
+  --surface-glass: 0 0% 100% / 0.8; /* Glassmorphism base */
+  
+  --text-main: 220 40% 20%;
+  --text-muted: 220 20% 50%;
+  --text-light: 220 20% 95%;
+
+  --error: 0 80% 60%;
+  --success: 150 80% 40%;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  --background: 220 30% 10%;
+  --surface: 220 25% 15%;
+  --surface-glass: 220 25% 15% / 0.8;
+  
+  --text-main: 220 20% 95%;
+  --text-muted: 220 20% 65%;
+}

@@ -1,0 +1,86 @@
+@import "tailwindcss";
+@import './styles/variables.css';
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--text-main));
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* Utilities */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-panel {
+  background: hsl(var(--surface-glass));
+  backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--surface) / 0.2);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--text-light));
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.btn-primary:hover {
+  background-color: hsl(var(--primary-dark));
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid hsl(var(--primary));
+  color: hsl(var(--primary));
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  background-color: hsl(var(--primary-light));
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
