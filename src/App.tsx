@@ -2,6 +2,20 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Login } from './pages/Auth/Login';
 import { Signup } from './pages/Auth/Signup';
 import { Home } from './pages/Home/Home';
+import { AppLayout } from './components/Layout/AppLayout';
+import { ProductsPage } from './pages/Products/ProductsPage';
+import { ListPage } from './pages/Lists/ListPage';
+import { SharedListPage } from './pages/Share/SharedListPage';
+import { BoardPage } from './pages/Board/BoardPage';
+
+// Simple protected route wrapper
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = sessionStorage.getItem('accessToken');
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
+};
 
 function App() {
   return (
@@ -10,6 +24,18 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+
+        {/* Public Share Route */}
+        <Route path="/share/:shareId" element={<SharedListPage />} />
+
+        {/* Protected Dashboard Routes */}
+        <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/list" element={<ListPage />} />
+          <Route path="/my-lists" element={<div>Saved Lists (Coming Soon)</div>} />
+          <Route path="/board" element={<BoardPage />} />
+        </Route>
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
