@@ -13,42 +13,51 @@ export const BoardCard: React.FC<BoardCardProps> = ({ item, onMoveLeft, onMoveRi
     return (
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
             <div className="flex gap-3 mb-3">
-                <img
-                    src={item.product.imageUrl || 'https://placehold.co/100x100'}
-                    alt={item.product.name}
-                    className="w-12 h-12 rounded-lg object-cover bg-gray-50"
-                />
-                <div>
-                    <span className="text-xs font-semibold uppercase text-gray-400">{item.product.category}</span>
-                    <h4 className="font-medium text-gray-900 leading-tight">{item.product.name}</h4>
+                <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 leading-tight">{item.name}</h4>
+                    {item.listName && (
+                        <p className="text-xs text-gray-400 mt-1">📋 {item.listName}</p>
+                    )}
                 </div>
             </div>
 
+            <div className="text-sm text-gray-500 mb-3">
+                {item.quantity && item.unit && (
+                    <span>📦 {item.quantity} {item.unit}</span>
+                )}
+                {item.notes && (
+                    <p className="text-xs text-gray-400 italic mt-1">{item.notes}</p>
+                )}
+            </div>
+
             <div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-50">
-                <span className="text-sm text-gray-500 font-medium">Qty: {item.quantity}</span>
+                <span className="text-xs font-semibold text-gray-400 capitalize">{item.status}</span>
 
                 <div className="flex items-center gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                     {onMoveLeft && (
                         <button
                             onClick={onMoveLeft}
-                            className="p-1.5 hover:bg-gray-100 rounded text-gray-500 hover:text-gray-900"
-                            title="Move Backward"
+                            className="p-1.5 hover:bg-gray-100 rounded text-gray-500 hover:text-gray-900 transition-colors"
+                            title="Move item to previous status"
+                            aria-label={`Move ${item.name} to previous status`}
                         >
                             <ArrowLeft size={16} />
                         </button>
                     )}
                     <button
                         onClick={onDelete}
-                        className="p-1.5 hover:bg-red-50 rounded text-gray-400 hover:text-red-600"
-                        title="Remove"
+                        className="p-1.5 hover:bg-red-50 rounded text-gray-400 hover:text-red-600 transition-colors"
+                        title="Delete this item"
+                        aria-label={`Delete ${item.name}`}
                     >
                         <Trash2 size={16} />
                     </button>
                     {onMoveRight && (
                         <button
                             onClick={onMoveRight}
-                            className="p-1.5 hover:bg-gray-100 rounded text-gray-500 hover:text-gray-900"
-                            title="Move Forward"
+                            className="p-1.5 hover:bg-gray-100 rounded text-gray-500 hover:text-gray-900 transition-colors"
+                            title="Move item to next status"
+                            aria-label={`Move ${item.name} to next status`}
                         >
                             <ArrowRight size={16} />
                         </button>

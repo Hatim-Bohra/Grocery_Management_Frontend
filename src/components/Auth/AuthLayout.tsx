@@ -1,75 +1,102 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Store } from 'lucide-react';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
   title: string;
   subtitle: string;
-  userType: 'user' | 'shopkeeper';
-  onUserTypeChange: (type: 'user' | 'shopkeeper') => void;
 }
 
 export const AuthLayout: React.FC<AuthLayoutProps> = ({
   children,
   title,
   subtitle,
-  userType,
-  onUserTypeChange,
 }) => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 -z-20" />
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/20 rounded-full blur-[100px] -z-10" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-400/20 rounded-full blur-[100px] -z-10" />
+      {/* Enhanced Background with Vibrant Gradients */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 dark:from-gray-900 dark:via-purple-900 dark:to-gray-800 -z-20" />
 
+      {/* Animated Background Blobs */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="glass-panel w-full max-w-md p-8 rounded-2xl relative"
+        className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full blur-[120px] opacity-40 -z-10"
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [0, 50, 0],
+          y: [0, 30, 0],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-gradient-to-br from-pink-400 to-purple-500 rounded-full blur-[120px] opacity-40 -z-10"
+        animate={{
+          scale: [1, 1.3, 1],
+          x: [0, -50, 0],
+          y: [0, -30, 0],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute top-[40%] left-[50%] w-[40%] h-[40%] bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full blur-[100px] opacity-30 -z-10"
+        animate={{
+          scale: [1, 1.1, 1],
+          rotate: [0, 180, 360],
+        }}
+        transition={{
+          duration: 30,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      />
+
+      {/* Enhanced Glass Panel with Animation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative w-full max-w-md"
       >
-        {/* User Type Toggle */}
-        <div className="flex p-1 bg-gray-100/50 dark:bg-gray-800/50 rounded-xl mb-8 relative">
+        {/* Glow Effect */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-3xl blur-xl opacity-30"></div>
+
+        {/* Main Card */}
+        <div className="relative bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50">
+          {/* Decorative Elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full blur-3xl opacity-20 -z-10"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full blur-3xl opacity-20 -z-10"></div>
+
+          {/* Header */}
           <motion.div
-            className="absolute top-1 bottom-1 bg-white dark:bg-gray-700 rounded-lg shadow-sm"
-            initial={false}
-            animate={{
-              left: userType === 'user' ? '4px' : '50%',
-              width: 'calc(50% - 4px)',
-              x: userType === 'shopkeeper' ? '0%' : '0%'
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          />
-          
-          <button
-            onClick={() => onUserTypeChange('user')}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium relative z-10 transition-colors ${
-              userType === 'user' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 hover:text-gray-700'
-            }`}
+            className="text-center mb-8"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <ShoppingBag size={18} />
-            Customer
-          </button>
-          
-          <button
-            onClick={() => onUserTypeChange('shopkeeper')}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium relative z-10 transition-colors ${
-              userType === 'shopkeeper' ? 'text-purple-600 dark:text-purple-400' : 'text-gray-500 hover:text-gray-700'
-            }`}
+            <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              {title}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+              {subtitle}
+            </p>
+          </motion.div>
+
+          {/* Content */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <Store size={18} />
-            Shopkeeper
-          </button>
+            {children}
+          </motion.div>
         </div>
-
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold mb-2 text-gradient">{title}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">{subtitle}</p>
-        </div>
-
-        {children}
       </motion.div>
     </div>
   );

@@ -1,53 +1,64 @@
+// User types
 export interface User {
-    id: string;
+    _id?: string;
+    userId?: string;
+    id?: string;
     email: string;
     name: string;
-    role: 'customer' | 'shopkeeper';
+    createdAt?: string;
+    updatedAt?: string;
 }
 
-export interface Product {
-    id: string;
-    name: string;
-    category: string;
-    price: number;
-    unit: string; // e.g., 'kg', 'pcs', 'pack'
-    imageUrl?: string;
-    description?: string;
-    inStock: boolean;
-}
+// List Item types
+export type ItemStatus = 'to_buy' | 'in_progress' | 'done' | 'unavailable' | 'substituted';
 
 export interface ListItem {
-    id: string;
-    productId: string;
-    product: Product;
+    _id?: string;
+    id?: string;
+    listId: string;
+    name: string;
     quantity: number;
-    isPurchased: boolean;
+    unit?: string;
+    notes?: string;
+    status: ItemStatus;
+    createdAt?: string;
+    updatedAt?: string;
 }
+
+// Grocery List types
+export type ListStatus = 'draft' | 'shared' | 'completed';
 
 export interface GroceryList {
-    id: string;
+    _id?: string;
+    id?: string;
     name: string;
-    userId: string;
-    items: ListItem[];
-    createdAt: string;
-    updatedAt: string;
-    status: 'active' | 'archived';
-    shareId?: string; // If shared
+    status: ListStatus;
+    userId?: string;
+    items?: ListItem[];
+    createdAt?: string;
+    updatedAt?: string;
 }
 
-export interface ShareLink {
-    id: string;
-    listId: string;
+// Share types
+export interface ShareData {
+    shareToken: string;
+    shopkeeperName?: string;
+    status: 'active' | 'accepted';
+    acceptedAt?: string;
+}
+
+export interface ShareResponse {
     list: GroceryList;
-    expiresAt?: string;
-    isActive: boolean;
+    items: ListItem[];
+    share: ShareData;
 }
 
 // For Kanban Board
-export type KanbanStatus = 'to-buy' | 'in-progress' | 'done';
+export type KanbanStatus = 'to_buy' | 'in_progress' | 'done' | 'unavailable' | 'substituted';
 
 export interface KanbanItem extends ListItem {
     status: KanbanStatus;
+    listName?: string;
 }
 
 export interface KanbanColumn {
