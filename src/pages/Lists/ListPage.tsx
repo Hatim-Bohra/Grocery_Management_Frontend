@@ -263,29 +263,29 @@ export const ListPage: React.FC = () => {
                     {/* Sidebar */}
                     <div className="lg:col-span-1">
                         {/* Instructions Card */}
-                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 mb-6 sticky top-4">
+                        <div className="bg-linear-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 mb-6 sticky top-4">
                             <h3 className="text-lg font-bold text-blue-900 mb-4 flex items-center gap-2">
                                 <span>🎯</span> Quick Guide
                             </h3>
                             <ol className="space-y-4 text-sm text-blue-900">
                                 <li className="flex gap-3">
-                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs">1</span>
+                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">1</span>
                                     <span>Create a new list</span>
                                 </li>
                                 <li className="flex gap-3">
-                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs">2</span>
+                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">2</span>
                                     <span>Add items to your list</span>
                                 </li>
                                 <li className="flex gap-3">
-                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs">3</span>
+                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">3</span>
                                     <span>Click <strong>Share</strong> button</span>
                                 </li>
                                 <li className="flex gap-3">
-                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs">4</span>
+                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">4</span>
                                     <span>Share link with shopkeepers</span>
                                 </li>
                                 <li className="flex gap-3">
-                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs">5</span>
+                                    <span className="font-bold bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">5</span>
                                     <span>They update item status</span>
                                 </li>
                             </ol>

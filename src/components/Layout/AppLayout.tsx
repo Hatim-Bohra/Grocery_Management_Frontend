@@ -21,9 +21,8 @@ export const AppLayout: React.FC = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-40 flex flex-col transition-transform duration-300 ${
-                sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            } md:translate-x-0 md:relative`}>
+            <aside className={`fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 z-40 flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                } md:translate-x-0 md:relative`}>
                 <div className="p-6 border-b border-gray-100 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white">
@@ -66,7 +65,7 @@ export const AppLayout: React.FC = () => {
                     <NavLink
                         to="/lists?new=1"
                         onClick={() => setSidebarOpen(false)}
-                        className="w-full inline-flex items-center justify-center gap-3 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-colors font-semibold shadow-md"
+                        className="w-full inline-flex items-center justify-center gap-3 px-4 py-3 bg-linear-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-colors font-semibold shadow-md"
                     >
                         <span className="text-xl">+</span>
                         <span>Create List</span>
