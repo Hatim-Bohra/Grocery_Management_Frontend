@@ -10,7 +10,7 @@ import { BoardPage } from './pages/Board/BoardPage';
 
 // Simple protected route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const token = sessionStorage.getItem('accessToken');
+  const token = localStorage.getItem('accessToken');
   if (!token) {
     return <Navigate to="/login" replace />;
   }
@@ -26,13 +26,12 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         {/* Public Share Route */}
-        <Route path="/share/:shareId" element={<SharedListPage />} />
+        <Route path="/share/:shareToken" element={<SharedListPage />} />
 
         {/* Protected Dashboard Routes */}
         <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
           <Route path="/products" element={<ProductsPage />} />
-          <Route path="/list" element={<ListPage />} />
-          <Route path="/my-lists" element={<div>Saved Lists (Coming Soon)</div>} />
+          <Route path="/lists" element={<ListPage />} />
           <Route path="/board" element={<BoardPage />} />
         </Route>
 
