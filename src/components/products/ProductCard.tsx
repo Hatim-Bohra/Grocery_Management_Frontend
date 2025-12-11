@@ -1,13 +1,19 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { ShoppingCart, Plus } from 'lucide-react';
+import './ProductCard.css';
 
-interface Product {
-  id: string;
+export interface Product {
+  id?: string;
+  _id?: string;
   name: string;
-  price?: number;
+  price: number;
   unit?: string;
-  imageUrl?: string;
+  category?: string;
+  image?: string;
   inStock?: boolean;
+  isNew?: boolean;
+  onSale?: boolean;
+  discount?: number;
 }
 
 interface ProductCardProps {
@@ -16,45 +22,66 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd }) => {
+  const displayPrice =
+    product.onSale && product.discount
+      ? product.price * (1 - product.discount / 100)
+      : product.price;
+
+  const handleAddToCart = () => {
+    if (onAdd) {
+      onAdd(product);
+    }
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group">
-      <div className="relative aspect-square overflow-hidden bg-gray-50">
-        <img
-          src={product.imageUrl || 'https://placehold.co/300x300?text=No+Image'}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        {product.inStock === false && (
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-              Out of Stock
-            </span>
+    <div className="product-card">
+      {/* Badges */}
+      <div className="product-card-badges">
+        {product.isNew && <span className="badge badge-primary">New</span>}
+        {product.onSale && <span className="badge badge-error">Sale</span>}
+        {!product.inStock && <span className="badge badge-gray">Out of Stock</span>}
+      </div>
+
+      {/* Image */}
+      <div className="product-card-image">
+        {product.image ? (
+          <img src={product.image} alt={product.name} loading="lazy" />
+        ) : (
+          <div className="product-card-image-placeholder">
+            <ShoppingCart size={48} />
           </div>
         )}
       </div>
 
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <h3 className="font-semibold text-gray-800">{product.name}</h3>
-          </div>
-          {product.price && (
-            <span className="text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-lg text-sm">
-              ${product.price.toFixed(2)}
-            </span>
+      {/* Content */}
+      <div className="product-card-content">
+        {/* Category */}
+        {product.category && <div className="product-card-category">{product.category}</div>}
+
+        {/* Name */}
+        <h3 className="product-card-title">{product.name}</h3>
+
+        {/* Price */}
+        <div className="product-card-price">
+          <span className="product-card-price-current">${displayPrice.toFixed(2)}</span>
+          {product.onSale && product.discount && (
+            <span className="product-card-price-original">${product.price.toFixed(2)}</span>
           )}
+          {product.unit && <span className="product-card-unit">/ {product.unit}</span>}
         </div>
 
-        {product.unit && <p className="text-sm text-gray-500 mb-4">per {product.unit}</p>}
-
-        <button
-          onClick={() => onAdd && onAdd(product)}
-          disabled={product.inStock === false}
-          className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed font-medium"
-        >
-          <Plus size={18} />
-          Add to List
-        </button>
+        {/* Actions */}
+        <div className="product-card-actions">
+          <button
+            className="btn btn-primary product-card-btn"
+            onClick={handleAddToCart}
+            disabled={!product.inStock}
+            aria-label={`Add ${product.name} to cart`}
+          >
+            <Plus size={18} />
+            Add to Cart
+          </button>
+        </div>
       </div>
     </div>
   );

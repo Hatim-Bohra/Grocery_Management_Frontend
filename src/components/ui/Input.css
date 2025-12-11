@@ -1,0 +1,108 @@
+/* ============================================
+   INPUT COMPONENT STYLES
+   ============================================ */
+
+.input-wrapper {
+  margin-bottom: var(--spacing-6);
+  position: relative;
+}
+
+.input-container {
+  position: relative;
+}
+
+/* Icon */
+.input-icon {
+  position: absolute;
+  left: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Input Field */
+.input {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  padding-top: calc(var(--spacing-4) + 8px);
+  padding-bottom: calc(var(--spacing-2));
+  color: var(--color-gray-900);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-base);
+  outline: none;
+}
+
+.input-with-icon {
+  padding-left: calc(var(--spacing-3) + 24px);
+}
+
+.input:focus {
+  border-color: var(--color-primary-600);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background-color: white;
+}
+
+.input-error {
+  border-color: var(--color-error-500);
+}
+
+.input-error:focus {
+  border-color: var(--color-error-500);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input:disabled {
+  background-color: var(--color-gray-100);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Label */
+.label {
+  position: absolute;
+  left: var(--spacing-4);
+  color: var(--color-text-tertiary);
+  transition: all var(--transition-base);
+  pointer-events: none;
+
+  /* Floating State (Default/Focus/Value) */
+  top: var(--spacing-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-600);
+}
+
+.label-with-icon {
+  left: calc(var(--spacing-3) + 24px);
+}
+
+/* Resting State (Placeholder Shown) */
+.input:placeholder-shown + .label {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-tertiary);
+}
+
+/* Focus State */
+.input:focus + .label {
+  top: var(--spacing-1);
+  transform: translateY(0);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-600);
+}
+
+/* Error Text */
+.input-error-text {
+  margin-top: var(--spacing-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-error-500);
+  margin-left: var(--spacing-1);
+}

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Menu, X, Search, LogOut } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingCart, Menu, X, Search, LogOut, User, Package } from 'lucide-react';
 import { api } from '../../api/client';
+import './Navbar.css';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 0);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -21,17 +22,9 @@ export const Navbar: React.FC = () => {
 
   // Check if user is logged in
   useEffect(() => {
-    // Use location to trigger re-check on route change
     const token = localStorage.getItem('accessToken');
     setIsLoggedIn(!!token); // eslint-disable-line react-hooks/set-state-in-effect
   }, [location]);
-
-  const navLinks = [{ name: 'Home', path: '/' }];
-
-  const authenticatedLinks = [
-    { name: 'My Lists', path: '/lists' },
-    { name: 'Board', path: '/board' },
-  ];
 
   const handleLogout = () => {
     api.auth.logout();
@@ -40,179 +33,189 @@ export const Navbar: React.FC = () => {
     navigate('/login');
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled || isMobileMenuOpen
-          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm'
-          : 'bg-white dark:bg-gray-900'
-      }`}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="text-2xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent shrink-0"
-          >
-            GrocerFlow
-          </Link>
+    <header className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
+      {/* Top Navigation Bar */}
+      <div className="navbar-top">
+        <div className="container">
+          <div className="navbar-top-content">
+            {/* Logo */}
+            <Link to="/" className="navbar-logo">
+              <Package size={28} />
+              <span className="navbar-logo-text">GrocerFlow</span>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`text-sm font-medium transition-colors hover:text-blue-600 ${
-                  location.pathname === link.path
-                    ? 'text-blue-600'
-                    : 'text-gray-600 dark:text-gray-300'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {/* Search Bar (Desktop) */}
+            <form className="navbar-search hidden-mobile" onSubmit={handleSearch}>
+              <input
+                type="text"
+                className="navbar-search-input"
+                placeholder="Search for products, categories..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Search products"
+              />
+              <button type="submit" className="navbar-search-btn" aria-label="Submit search">
+                <Search size={20} />
+              </button>
+            </form>
 
-            {isLoggedIn && (
-              <>
-                {authenticatedLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    to={link.path}
-                    className={`text-sm font-medium transition-colors hover:text-blue-600 ${
-                      location.pathname === link.path
-                        ? 'text-blue-600'
-                        : 'text-gray-600 dark:text-gray-300'
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </>
-            )}
-          </div>
-
-          {/* Actions */}
-          <div className="hidden md:flex items-center gap-6">
-            {isLoggedIn ? (
-              <>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">
-                  <Search size={20} />
-                </button>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors font-medium text-sm"
-                >
-                  <LogOut size={18} />
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <button className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">
-                  <Search size={20} />
-                </button>
-                <Link
-                  to="/cart"
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors relative"
-                >
-                  <ShoppingCart size={20} />
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    0
-                  </span>
-                </Link>
-                <Link to="/login" className="btn-primary py-2 px-4 text-sm">
-                  Login
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-gray-600 dark:text-gray-300"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white dark:bg-gray-900 border-t dark:border-gray-800"
-          >
-            <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="text-gray-600 dark:text-gray-300 font-medium py-2 hover:text-blue-600"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-
-              {isLoggedIn && (
-                <>
-                  {authenticatedLinks.map((link) => (
-                    <Link
-                      key={link.name}
-                      to={link.path}
-                      className="text-gray-600 dark:text-gray-300 font-medium py-2 hover:text-blue-600"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                </>
-              )}
-
-              <hr className="border-gray-100 dark:border-gray-800" />
-
+            {/* Actions */}
+            <div className="navbar-actions">
               {isLoggedIn ? (
                 <>
-                  <div className="flex items-center gap-4 py-2">
-                    <button className="flex items-center gap-2 text-gray-600 dark:text-gray-300 flex-1">
-                      <Search size={20} />
-                      <span>Search</span>
-                    </button>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="btn-danger text-center py-2.5 w-full flex items-center justify-center gap-2"
-                  >
-                    <LogOut size={18} />
-                    Logout
+                  <Link to="/account" className="navbar-action-link hidden-mobile">
+                    <User size={20} />
+                    <span>Account</span>
+                  </Link>
+                  <Link to="/cart" className="navbar-action-link">
+                    <ShoppingCart size={20} />
+                    <span className="hidden-mobile">Cart</span>
+                    <span className="navbar-cart-badge">0</span>
+                  </Link>
+                  <button onClick={handleLogout} className="navbar-action-link hidden-mobile">
+                    <LogOut size={20} />
+                    <span>Logout</span>
                   </button>
                 </>
               ) : (
                 <>
-                  <div className="flex items-center gap-4 py-2">
-                    <Link
-                      to="/cart"
-                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300 flex-1"
-                    >
-                      <ShoppingCart size={20} />
-                      <span>Cart</span>
-                    </Link>
-                  </div>
-                  <Link to="/login" className="btn-primary text-center py-2.5 w-full">
-                    Login / Sign Up
+                  <Link to="/cart" className="navbar-action-link">
+                    <ShoppingCart size={20} />
+                    <span className="hidden-mobile">Cart</span>
+                  </Link>
+                  <Link to="/login" className="btn btn-primary btn-sm">
+                    Sign In
                   </Link>
                 </>
               )}
+
+              {/* Mobile Menu Toggle */}
+              <button
+                className="navbar-mobile-toggle visible-mobile-only"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+          </div>
+        </div>
+      </div>
+
+      {/* Secondary Navigation (Categories/Links) */}
+      <div className="navbar-secondary hidden-mobile">
+        <div className="container">
+          <nav className="navbar-nav">
+            <Link to="/" className={`navbar-nav-link ${location.pathname === '/' ? 'active' : ''}`}>
+              Home
+            </Link>
+            {isLoggedIn && (
+              <>
+                <Link
+                  to="/lists"
+                  className={`navbar-nav-link ${location.pathname === '/lists' ? 'active' : ''}`}
+                >
+                  My Lists
+                </Link>
+                <Link
+                  to="/board"
+                  className={`navbar-nav-link ${location.pathname === '/board' ? 'active' : ''}`}
+                >
+                  Board
+                </Link>
+              </>
+            )}
+            <Link
+              to="/products"
+              className={`navbar-nav-link ${location.pathname === '/products' ? 'active' : ''}`}
+            >
+              Products
+            </Link>
+          </nav>
+        </div>
+      </div>
+
+      {/* Mobile Search (visible on mobile) */}
+      <div className="navbar-mobile-search visible-mobile-only">
+        <div className="container">
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              className="navbar-search-input"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search products"
+            />
+            <button type="submit" className="navbar-search-btn" aria-label="Submit search">
+              <Search size={20} />
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="navbar-mobile-menu">
+          <div className="container">
+            <nav className="navbar-mobile-nav">
+              <Link
+                to="/"
+                className="navbar-mobile-link"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+              {isLoggedIn && (
+                <>
+                  <Link
+                    to="/lists"
+                    className="navbar-mobile-link"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    My Lists
+                  </Link>
+                  <Link
+                    to="/board"
+                    className="navbar-mobile-link"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Board
+                  </Link>
+                  <Link
+                    to="/account"
+                    className="navbar-mobile-link"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Account
+                  </Link>
+                </>
+              )}
+              <Link
+                to="/products"
+                className="navbar-mobile-link"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Products
+              </Link>
+              {isLoggedIn && (
+                <button onClick={handleLogout} className="navbar-mobile-link navbar-mobile-logout">
+                  <LogOut size={18} />
+                  Logout
+                </button>
+              )}
+            </nav>
+          </div>
+        </div>
+      )}
+    </header>
   );
 };
