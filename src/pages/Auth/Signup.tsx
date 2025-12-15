@@ -1,59 +1,38 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight, AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 import { Navbar } from '../../components/Layout/Navbar';
 import { Footer } from '../../components/Layout/Footer';
 import { Input } from '../../components/ui/Input';
-import { api } from '../../api/client';
+import { useAuth } from '../../hooks/useAuth';
 import './Auth.css';
 
 export const Signup: React.FC = () => {
-  const navigate = useNavigate();
+  const { register, loading, error, setError } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
-      setLoading(false);
       return;
     }
 
     if (formData.password.length < 6) {
       setError('Password must be at least 6 characters');
-      setLoading(false);
       return;
     }
 
-    try {
-      await api.auth.register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-      navigate('/login');
-    } catch (err) {
-      let errorMessage = 'Signup failed. Please try again.';
-      if (axios.isAxiosError(err)) {
-        errorMessage = Array.isArray(err.response?.data?.message)
-          ? err.response?.data?.message[0]
-          : err.response?.data?.message || errorMessage;
-      }
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+    await register({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    });
   };
 
   const getPasswordStrength = (password: string) => {
@@ -88,6 +67,7 @@ export const Signup: React.FC = () => {
                 <Input
                   label="Full Name"
                   type="text"
+                  name="name"
                   icon={User}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -98,6 +78,7 @@ export const Signup: React.FC = () => {
                 <Input
                   label="Email Address"
                   type="email"
+                  name="email"
                   icon={Mail}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -109,6 +90,7 @@ export const Signup: React.FC = () => {
                   <Input
                     label="Password"
                     type="password"
+                    name="password"
                     icon={Lock}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -120,13 +102,12 @@ export const Signup: React.FC = () => {
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs text-secondary">Password strength:</span>
                         <span
-                          className={`text-xs font-semibold ${
-                            passwordStrength.strength === 1
-                              ? 'text-error-600'
-                              : passwordStrength.strength === 2
-                                ? 'text-warning-600'
-                                : 'text-success-600'
-                          }`}
+                          className={`text-xs font-semibold ${passwordStrength.strength === 1
+                            ? 'text-error-600'
+                            : passwordStrength.strength === 2
+                              ? 'text-warning-600'
+                              : 'text-success-600'
+                            }`}
                         >
                           {passwordStrength.label}
                         </span>
@@ -144,6 +125,7 @@ export const Signup: React.FC = () => {
                 <Input
                   label="Confirm Password"
                   type="password"
+                  name="confirmPassword"
                   icon={Lock}
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
@@ -153,11 +135,10 @@ export const Signup: React.FC = () => {
 
                 {formData.confirmPassword && (
                   <div
-                    className={`flex items-center gap-2 text-sm ${
-                      formData.password === formData.confirmPassword
-                        ? 'text-success-600'
-                        : 'text-error-600'
-                    }`}
+                    className={`flex items-center gap-2 text-sm ${formData.password === formData.confirmPassword
+                      ? 'text-success-600'
+                      : 'text-error-600'
+                      }`}
                   >
                     {formData.password === formData.confirmPassword ? (
                       <>

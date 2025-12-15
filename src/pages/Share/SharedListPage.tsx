@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { SharedListView } from '../../components/lists/SharedListView';
 import { useListRealtime } from '../../hooks/useListRealtime';
 import { api } from '../../api/client';
-import axios from 'axios';
+import { getErrorMessage } from '../../api/utils';
 import type { ShareResponse, ItemStatus, ListItem, GroceryList } from '../../types';
 import { useToast } from '../../components/common/ToastProvider';
 
@@ -16,13 +16,7 @@ export const SharedListPage: React.FC = () => {
   const [hasAccepted, setHasAccepted] = useState(false);
   const { showToast } = useToast();
 
-  useEffect(() => {
-    if (shareToken) {
-      fetchSharedList();
-    }
-  }, [shareToken]);
-
-  const fetchSharedList = async () => {
+  const fetchSharedList = React.useCallback(async () => {
     if (!shareToken) return;
     setLoading(true);
     try {
@@ -30,15 +24,18 @@ export const SharedListPage: React.FC = () => {
       setData(result);
       setHasAccepted(result.share?.status === 'accepted');
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || 'Error occurred');
-      } else {
-        setError('Error occurred');
-      }
+      console.error(err);
+      setError('Failed to load shared list');
     } finally {
       setLoading(false);
     }
-  };
+  }, [shareToken]);
+
+  useEffect(() => {
+    if (shareToken) {
+      fetchSharedList();
+    }
+  }, [shareToken, fetchSharedList]);
 
   const listId = data?.list?._id || data?.list?.id || null;
   useListRealtime(
@@ -103,11 +100,7 @@ export const SharedListPage: React.FC = () => {
       setData(result);
       showToast('success', 'List accepted successfully!');
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || 'Failed to accept share');
-      } else {
-        setError('Failed to accept share');
-      }
+      setError(getErrorMessage(err));
     }
   };
 
@@ -123,11 +116,7 @@ export const SharedListPage: React.FC = () => {
 
       setData({ ...data, items: updatedItems });
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || 'Failed to update item');
-      } else {
-        setError('Failed to update item');
-      }
+      setError(getErrorMessage(err));
     }
   };
 
@@ -141,11 +130,7 @@ export const SharedListPage: React.FC = () => {
       }
       showToast('success', 'List marked as completed!');
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || 'Failed to complete list');
-      } else {
-        setError('Failed to complete list');
-      }
+      setError(getErrorMessage(err));
     }
   };
 

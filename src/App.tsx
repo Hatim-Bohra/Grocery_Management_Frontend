@@ -8,6 +8,7 @@ import { ListPage } from './pages/Lists/ListPage';
 import { SharedListPage } from './pages/Share/SharedListPage';
 import { BoardPage } from './pages/Board/BoardPage';
 import { ToastProvider } from './components/common/ToastProvider';
+import { PublicLayout } from './components/Layout/PublicLayout';
 
 // Simple protected route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -30,6 +31,13 @@ function App() {
           {/* Public Share Route */}
           <Route path="/share/:shareToken" element={<SharedListPage />} />
 
+          {/* Public Routes with Layout */}
+          <Route element={<PublicLayout />}>
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/cart" element={<div className="p-8 text-center text-gray-500">Cart coming soon</div>} />
+            <Route path="/account" element={<div className="p-8 text-center text-gray-500">Account settings coming soon</div>} />
+          </Route>
+
           {/* Protected Dashboard Routes */}
           <Route
             element={
@@ -38,7 +46,6 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="/products" element={<ProductsPage />} />
             <Route path="/lists" element={<ListPage />} />
             <Route path="/board" element={<BoardPage />} />
           </Route>

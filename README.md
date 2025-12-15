@@ -90,6 +90,25 @@ Follow these steps to set up the project locally.
 - `npm run lint`: Runs ESLint to check for code quality issues.
 - `npm run preview`: Previews the production build locally.
 
+## 📏 Code Quality & Standards
+
+This project maintains high code quality standards using **ESLint** and **Prettier**.
+
+### ESLint
+We use `typescript-eslint` with standard React configurations.
+- **Rules**: Enforces best practices for React Hooks and typical TypeScript constraints.
+- **Configuration**: See `eslint.config.js` for details.
+
+### Prettier
+Code formatting is automatically handled by Prettier.
+- **Semicolons**: Yes (`semi: true`)
+- **Quotes**: Single quotes (`singleQuote: true`)
+- **Indentation**: 2 spaces (`tabWidth: 2`)
+- **Trailing Commas**: ES5 compatible (`trailingComma: "es5"`)
+- **Line Length**: 100 characters (`printWidth: 100`)
+
+To format your code manually, you can generally use your IDE's format command or run prettier directly if configured.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
