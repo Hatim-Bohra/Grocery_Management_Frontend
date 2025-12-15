@@ -68,7 +68,8 @@ export const ListPage: React.FC = () => {
       setCurrentList({ ...newList, items: [] });
       setShowNewListForm(false);
       showToast('success', `List "${name}" created successfully!`);
-      setError('Failed to create list');
+    } catch (err) {
+      setError(getErrorMessage(err));
     }
   };
 

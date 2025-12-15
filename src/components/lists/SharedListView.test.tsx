@@ -21,7 +21,7 @@ describe('SharedListView Component', () => {
         items: [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        user: 'user-1',
+        userId: 'user-1',
     };
 
     const mockItems: any[] = [
@@ -31,9 +31,9 @@ describe('SharedListView Component', () => {
 
     const mockShareData: ShareData = {
         shareToken: 'token-123',
-        shareUrl: 'http://localhost/share/token-123',
         shopkeeperName: 'John Store',
-        createdAt: new Date().toISOString(),
+        status: 'active',
+        acceptedAt: undefined,
     };
 
     const defaultProps = {

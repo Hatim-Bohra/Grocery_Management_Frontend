@@ -177,14 +177,15 @@ export const CurrentListBuilder: React.FC<CurrentListBuilderProps> = ({
               return (
                 <div
                   key={item._id || item.id}
-                  className={`relative group bg - white rounded - 2xl p - 4 shadow - sm border transition - all duration - 200 ${isDone ? 'border-gray-100 bg-gray-50' : 'border-gray-200 hover:border-blue-300 hover:shadow-md'
-                    } `}
+                  className={`relative group bg-white rounded-2xl p-4 shadow-sm border transition-all duration-200 ${isDone ? 'border-gray-100 bg-gray-50' : 'border-gray-200 hover:border-blue-300 hover:shadow-md'
+                    }`}
                 >
                   <div className="flex items-start gap-4">
                     {/* Checkbox / Status Toggle */}
                     <button
                       onClick={() => onUpdateItemStatus(item._id || item.id || '', getNextStatus(status))}
-                      className={`shrink - 0 w - 8 h - 8 rounded - full border - 2 flex items - center justify - center transition - all duration - 300 mt - 0.5 ${getStatusColor(status)} `}
+                      className={`shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-300 mt-0.5 ${getStatusColor(status)}`}
+                      aria-label="Change status"
                     >
                       {isDone && <Check size={16} strokeWidth={3} />}
                       {status === 'in_progress' && <div className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse" />}
@@ -192,19 +193,19 @@ export const CurrentListBuilder: React.FC<CurrentListBuilderProps> = ({
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h3 className={`text - lg font - semibold leading - tight transition - all ${isDone ? 'text-gray-400 line-through decoration-2' : 'text-gray-800'} `}>
+                      <h3 className={`text-lg font-semibold leading-tight transition-all ${isDone ? 'text-gray-400 line-through decoration-2' : 'text-gray-800'}`}>
                         {item.name}
                       </h3>
 
                       <div className="flex flex-wrap gap-2 mt-2">
                         {(item.quantity || item.unit) && (
-                          <span className={`inline - flex items - center gap - 1 text - xs font - medium px - 2 py - 1 rounded - md ${isDone ? 'bg-gray-100 text-gray-400' : 'bg-blue-50 text-blue-700'} `}>
+                          <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-md ${isDone ? 'bg-gray-100 text-gray-400' : 'bg-blue-50 text-blue-700'}`}>
                             <Scale size={12} />
                             {item.quantity} {item.unit}
                           </span>
                         )}
                         {item.notes && (
-                          <span className={`inline - flex items - center gap - 1 text - xs font - medium px - 2 py - 1 rounded - md ${isDone ? 'bg-gray-100 text-gray-400' : 'bg-amber-50 text-amber-700'} `}>
+                          <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-md ${isDone ? 'bg-gray-100 text-gray-400' : 'bg-amber-50 text-amber-700'}`}>
                             <AlignLeft size={12} />
                             {item.notes}
                           </span>

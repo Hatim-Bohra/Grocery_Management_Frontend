@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { CurrentListBuilder } from './CurrentListBuilder';
+import type { GroceryList } from '../../types';
 
 // Mock dependencies
 vi.mock('../../api/client', () => ({
@@ -30,14 +31,17 @@ vi.mock('./AddItemModal', () => ({
 }));
 
 describe('CurrentListBuilder Component', () => {
-    const mockList: unknown = {
+    const mockList: GroceryList = {
         _id: '123',
         name: 'Weekly Groceries',
-        status: 'active',
+        status: 'draft',
         items: [
-            { _id: '1', name: 'Milk', status: 'to_buy' },
-            { _id: '2', name: 'Eggs', status: 'done' },
+            { _id: '1', name: 'Milk', status: 'to_buy', listId: '123', quantity: 1 },
+            { _id: '2', name: 'Eggs', status: 'done', listId: '123', quantity: 12 },
         ],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        userId: 'user-1',
     };
 
     const defaultProps = {
@@ -68,12 +72,10 @@ describe('CurrentListBuilder Component', () => {
 
     it('handles item status update', () => {
         render(<CurrentListBuilder {...defaultProps} />);
-        const statusButton = screen.getAllByRole('button', { name: /Change status/i })[0];
-        fireEvent.click(statusButton); // Based on component structure, status button is the first button inside the item row.
-        // Let's find it by associating with the item text if possible, or just click the first one found.
-        // Actually, looking at code: Milk is first item. The status button is before name.
+        const statusButtons = screen.getAllByRole('button', { name: /Change status/i });
+        expect(statusButtons.length).toBeGreaterThan(0);
 
-        // We can rely on render order or classes.
-        // Let's assume the button with specific class for 'to_buy' status: 'border-gray-300'
+        fireEvent.click(statusButtons[0]);
+        expect(defaultProps.onUpdateItemStatus).toHaveBeenCalled();
     });
 });
