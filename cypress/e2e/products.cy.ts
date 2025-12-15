@@ -17,7 +17,11 @@ describe('Products Flow', () => {
   });
 
   it('should allow typing in search box', () => {
-    cy.get('input[placeholder="Search products..."]').type('Milk');
-    cy.get('input[placeholder="Search products..."]').should('have.value', 'Milk');
+    // Target specifically the desktop search or ensure we're targeting a visible one
+    cy.get('.navbar-search.hidden-mobile input[placeholder="Search products..."]').type('Milk');
+    cy.get('.navbar-search.hidden-mobile input[placeholder="Search products..."]').should(
+      'have.value',
+      'Milk'
+    );
   });
 });

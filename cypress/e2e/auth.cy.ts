@@ -7,12 +7,12 @@ describe('Authentication Flow', () => {
 
   beforeEach(() => {
     // Mock API calls
-    cy.intercept('POST', '**/auth/login', {
+    cy.intercept('POST', '**/api/auth/login', {
       statusCode: 200,
       body: { access_token: 'fake-jwt-token' },
     }).as('loginRequest');
 
-    cy.intercept('POST', '**/auth/register', {
+    cy.intercept('POST', '**/api/auth/register', {
       statusCode: 201,
       body: { id: '1', email: 'test@example.com', name: 'Test User' },
     }).as('registerRequest');
@@ -26,13 +26,12 @@ describe('Authentication Flow', () => {
 
   it('should register a new user', () => {
     cy.visit('/signup');
-    cy.get('input[name="firstName"]').type('Test');
-    cy.get('input[name="lastName"]').type('User');
+    cy.get('input[name="name"]').type('Test User');
     cy.get('input[name="email"]').type(testUser.email);
     cy.get('input[name="password"]').type(testUser.password);
     cy.get('input[name="confirmPassword"]').type(testUser.password);
 
-    cy.get('button[type="submit"]').click();
+    cy.contains('button', 'Start Your Journey').click();
 
     cy.wait('@registerRequest');
     // After successful register, app likely redirects to login
@@ -43,7 +42,7 @@ describe('Authentication Flow', () => {
     cy.visit('/login');
     cy.get('input[name="email"]').type(testUser.email);
     cy.get('input[name="password"]').type(testUser.password);
-    cy.get('button[type="submit"]').click();
+    cy.contains('button', 'Login to Account').click();
 
     cy.wait('@loginRequest');
 
