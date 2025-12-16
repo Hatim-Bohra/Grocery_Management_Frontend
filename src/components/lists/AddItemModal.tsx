@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { api } from "../../api/client";
-import { AlignLeft, Plus, ShoppingBag } from "lucide-react";
-import Modal from "../common/Modal";
-import { useToast } from "../common/ToastProvider";
+import { useEffect, useRef, useState } from 'react';
+import { api } from '../../api/client';
+import { AlignLeft, Plus, ShoppingBag } from 'lucide-react';
+import Modal from '../common/Modal';
+import { useToast } from '../common/ToastContext';
 
 interface AddItemModalProps {
   listId: string;
@@ -62,7 +62,9 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ listId, onClose, onItemAdde
         {/* Quantity & Unit */}
         <div className="grid grid-cols-12 gap-4 mb-4">
           <div className="col-span-5">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">Quantity</label>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">
+              Quantity
+            </label>
             <input
               type="number"
               min="1"
@@ -73,7 +75,9 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ listId, onClose, onItemAdde
             />
           </div>
           <div className="col-span-7">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">Unit</label>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">
+              Unit
+            </label>
             <div className="relative">
               <input
                 type="text"
@@ -88,7 +92,9 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ listId, onClose, onItemAdde
 
         {/* Notes */}
         <div className="mb-4">
-          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">Notes (Optional)</label>
+          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 block">
+            Notes (Optional)
+          </label>
           <div className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent px-3 py-3">
             <AlignLeft size={20} className="text-gray-400 shrink-0" />
             <input

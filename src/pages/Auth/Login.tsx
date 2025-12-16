@@ -1,39 +1,22 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Mail, Lock, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import { Navbar } from '../../components/Layout/Navbar';
 import { Footer } from '../../components/Layout/Footer';
 import { Input } from '../../components/ui/Input';
-import { api } from '../../api/client';
+import { useAuth } from '../../hooks/useAuth';
 import './Auth.css';
 
 export const Login: React.FC = () => {
-  const navigate = useNavigate();
+  const { login, loading, error } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      await api.auth.login(formData);
-      navigate('/');
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || 'Login failed. Please try again.');
-      } else {
-        setError('Login failed. Please try again.');
-      }
-    } finally {
-      setLoading(false);
-    }
+    await login(formData);
   };
 
   return (
@@ -59,6 +42,7 @@ export const Login: React.FC = () => {
                 <Input
                   label="Email Address"
                   type="email"
+                  name="email"
                   icon={Mail}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -69,6 +53,7 @@ export const Login: React.FC = () => {
                 <Input
                   label="Password"
                   type="password"
+                  name="password"
                   icon={Lock}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}

@@ -2,7 +2,9 @@ import axios, { AxiosError } from 'axios';
 import type { User, GroceryList, ListItem, ShareData, ShareResponse } from '../types';
 
 // Use environment variable or default to localhost
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// Use environment variable or default to localhost, ensuring /api suffix
+const envUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
