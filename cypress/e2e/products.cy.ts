@@ -7,7 +7,7 @@ describe('Products Flow', () => {
     // Check for "Browse Products" header
     cy.contains('h1', 'Browse Products').should('be.visible');
     // Check for search input
-    cy.get('input[placeholder="Search products..."]').should('be.visible');
+    cy.get('input[placeholder="Search for products, categories..."]').should('be.visible');
   });
 
   it('should display coming soon message', () => {
@@ -18,10 +18,11 @@ describe('Products Flow', () => {
 
   it('should allow typing in search box', () => {
     // Target specifically the desktop search or ensure we're targeting a visible one
-    cy.get('.navbar-search.hidden-mobile input[placeholder="Search products..."]').type('Milk');
-    cy.get('.navbar-search.hidden-mobile input[placeholder="Search products..."]').should(
-      'have.value',
-      'Milk'
-    );
+    cy.get(
+      '.navbar-search.hidden-mobile input[placeholder="Search for products, categories..."]'
+    ).type('Milk');
+    cy.get(
+      '.navbar-search.hidden-mobile input[placeholder="Search for products, categories..."]'
+    ).should('have.value', 'Milk');
   });
 });
